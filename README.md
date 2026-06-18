@@ -27,21 +27,39 @@ The system combines semantic search using FAISS and Sentence Transformers with L
 
 ## Architecture
 
+```text
+Document Flow:
 AWS Customer Agreement PDF
-↓
-Document Parser
-↓
-Text Chunking
-↓
-Sentence Transformer Embeddings
-↓
+    ↓
+POST /ingest
+    ↓
+PDF Parser
+    ↓
+Chunking
+    ↓
+Embeddings (all-MiniLM-L6-v2)
+    ↓
 FAISS Vector Store
-↓
-Retriever
-↓
+
+Query Flow:
+User Query
+    ↓
+POST /ask
+    ↓
+Retriever (Top-K)
+    ↓
 Groq LLM
-↓
+    ↓
 Generated Answer
+    ↓
+SQLite Logging
+
+Analytics Flow:
+SQLite Logs
+    ↓
+GET /analytics
+    ↓
+Streamlit Dashboard
 
 ---
 
