@@ -35,3 +35,35 @@ if st.button("Ask"):
         "Latency (ms)",
         result["latency_ms"]
     )
+st.divider()
+
+st.header("📊 Analytics")
+
+if st.button("Load Analytics"):
+
+    analytics = requests.get(
+        "http://127.0.0.1:8000/analytics"
+    ).json()
+
+    st.metric(
+        "Total Queries",
+        analytics["total_queries"]
+    )
+
+    st.metric(
+        "Unanswered Queries",
+        analytics["unanswered_queries"]
+    )
+
+    st.metric(
+        "Average Latency (ms)",
+        analytics["average_latency_ms"]
+    )
+
+    st.subheader(
+        "Most Frequent Questions"
+    )
+
+    st.table(
+        analytics["most_frequent_questions"]
+    )

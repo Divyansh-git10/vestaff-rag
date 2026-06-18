@@ -168,23 +168,57 @@ python -m streamlit run frontend/app.py
 
 ## API Endpoints
 
+### GET /
+
+Health check endpoint.
+
+Returns a simple message confirming that the API is running.
+
+---
+
+### POST /ingest
+
+Processes and ingests the AWS Customer Agreement PDF.
+
+This endpoint:
+
+* Extracts text from the PDF
+* Chunks the document into smaller sections
+* Generates semantic embeddings using Sentence Transformers
+* Builds and stores a FAISS vector index for retrieval
+
+Returns:
+
+* Success message
+* Number of chunks created
+
+---
+
 ### POST /ask
 
-Accepts a natural language query and returns:
+Accepts a natural language query and executes the complete RAG pipeline.
+
+Returns:
 
 * Generated answer
 * Retrieved source context
 * Response latency
 
+All interactions are automatically logged into the SQLite database for analytics.
+
+---
+
 ### GET /analytics
+
+Returns usage statistics generated from SQL queries on the interaction logs.
 
 Returns:
 
 * Total queries
 * Unanswered queries
-* Average latency
+* Average response latency
+* Most frequently asked questions
 
----
 
 ## Example Questions
 

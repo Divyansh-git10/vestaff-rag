@@ -95,10 +95,60 @@ def analytics():
         .scalar()
     )
 
+    most_frequent = (
+        db.query(
+            QueryLog.query,
+            func.count(QueryLog.query).label("count")
+        )
+        .group_by(QueryLog.query)
+        .order_by(
+            func.count(QueryLog.query).desc()
+        )
+        .limit(5)
+        .all()
+    )
+
     db.close()
 
     return {
         "total_queries": total_queries,
         "unanswered_queries": unanswered_queries,
-        "average_latency_ms": round(avg_latency or 0, 2)
+        "average_latency_ms": round(
+            avg_latency or 0,
+            2
+        ),
+        "most_frequent_questions": [
+            {
+                "query": q,
+                "count": c
+            }
+            for q, c in most_frequent
+        ]
+    }
+@app.post("/ingest")
+def ingest_document():
+
+    from backend.rag.parser import extract_text
+    from backend.rag.chunker import chunk_text
+    from backend.rag.embeddings import get_embeddings
+    from backend.rag.vectorstore import build_faiss
+
+    text = extract_text(
+        "data/AWS Customer Agreement.pdf"
+    )
+
+    chunks = chunk_text(text)
+
+    embeddings = get_embeddings(
+        chunks
+    )
+
+    build_faiss(
+        embeddings,
+        chunks
+    )
+
+    return {
+        "message": "Document ingested successfully",
+        "chunks_created": len(chunks)
     }
