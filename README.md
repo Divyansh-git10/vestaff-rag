@@ -41,6 +41,8 @@ Embeddings (all-MiniLM-L6-v2)
     ↓
 FAISS Vector Store
 
+--------------------------------
+
 Query Flow:
 User Query
     ↓
@@ -54,12 +56,15 @@ Generated Answer
     ↓
 SQLite Logging
 
+--------------------------------
+
 Analytics Flow:
 SQLite Logs
     ↓
 GET /analytics
     ↓
 Streamlit Dashboard
+```
 
 ---
 
@@ -74,7 +79,7 @@ Streamlit Dashboard
 
 ### RAG Components
 
-* Sentence Transformers
+* Sentence Transformers (all-MiniLM-L6-v2)
 * FAISS
 * PyPDF
 
@@ -85,37 +90,6 @@ Streamlit Dashboard
 ### Frontend
 
 * Streamlit
-
----
-
-## Project Structure
-
-```text
-vestaff-rag/
-│
-├── backend/
-│   ├── database/
-│   ├── rag/
-│   ├── main.py
-│   ├── schemas.py
-│   └── init_db.py
-│
-├── frontend/
-│   └── app.py
-│
-├── data/
-│   └── AWS Customer Agreement.pdf
-│
-├── vector_store/
-│   ├── faiss.index
-│   └── chunks.pkl
-│
-├── test_ingest.py
-├── test_retrieval.py
-├── test_generator.py
-├── requirements.txt
-└── README.md
-```
 
 ## Setup Instructions
 
